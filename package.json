@@ -1,0 +1,41 @@
+
+{
+  "name": "gulp-w3c-validate",
+  "version": "0.0.0",
+  "description": "A HTML validator for Gulp",
+  "keywords": [
+    "gulpplugin"
+  ],
+  "homepage": "https://github.com/callumacrae/gulp-w3c-validate",
+  "bugs": "https://github.com/callumacrae/gulp-w3c-validate/issues",
+  "author": {
+    "name": "Callum Macrae",
+    "email": "callum@macr.ae",
+    "url": "https://github.com/callumacrae"
+  },
+  "main": "./index.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/callumacrae/gulp-w3c-validate.git"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "dependencies": {
+    "event-stream": "*"
+  },
+  "devDependencies": {
+    "mocha": "~1.14.0",
+    "should": "~2.1.0",
+    "gulp-util": "~2.2.0"
+  },
+  "engines": {
+    "node": ">=0.8.0",
+    "npm": ">=1.2.10"
+  },
+  "licenses": [
+    {
+      "type": "MIT"
+    }
+  ]
+}
