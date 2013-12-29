@@ -1,36 +1,48 @@
-var es = require("event-stream");
+'use strict';
 
-module.exports = function (param) {
-	"use strict";
+var es = require('event-stream'),
+	w3cjs = require('w3cjs'),
+	gutil = require('gulp-util'),
+	path = require('path');
 
-	// see "Writing a plugin"
-	// https://github.com/wearefractal/gulp/wiki/Writing-a-gulp-plugin
-	function w3c-validate(file, callback) {
+/**
+ * Handles messages.
+ *
+ * @param file The file array.
+ * @param messages Array of messages returned by w3cjs.
+ * @return boolean Return false if errors have occurred.
+ */
+function handleMessages(file, messages) {
+	var success = true,
+		errorText = gutil.colors.red.bold('HTML Error:'),
+		warningText = gutil.colors.yellow.bold('HTML Warning:');
 
-		// if necessary check for required param(s), e.g. options hash, etc.
-		if (!param) {
-			callback(new Error("gulp-w3c-validate: No param supplied"), undefined);
+	messages.forEach(function (message) {
+		if (message.type === 'error') {
+			success = false;
 		}
 
-		// check if file.contents is a `Buffer`
-		if (file.contents instanceof Buffer) {
+		var type = (message.type === 'error') ? errorText : warningText,
+			location = 'Line ' + message.lastLine + ', Column ' + message.lastColumn + ':';
 
-			// manipulate buffer in some way
-			// http://nodejs.org/api/buffer.html
-			file.contents = new Buffer(String(file.contents) + "\n" + param);
+		gutil.log(type, file.relative, location, message.message);
+	});
 
-			callback(null, file);
+	return success;
+}
 
-		} else { // assume it is a `stream.Readable`
+module.exports = function () {
+	return es.map(function (file, callback) {
+		w3cjs.validate({
+			file: file.path,
+			callback: function (res) {
+				file.w3cjs = {
+					success: handleMessages(file, res.messages),
+					messages: res.messages
+				};
 
-			// http://nodejs.org/api/stream.html
-			// http://nodejs.org/api/child_process.html
-			// https://github.com/dominictarr/event-stream
-
-			// accepting streams is optional
-			callback(new Error("gulp-w3c-validate: streams not supported"), undefined);
-		}
-	}
-
-	return es.map(w3c-validate);
+				callback(null, file);
+			}
+		});
+	});
 };

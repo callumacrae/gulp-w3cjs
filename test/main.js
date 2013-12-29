@@ -1,109 +1,76 @@
 /*global describe, it*/
-"use strict";
+'use strict';
 
-var fs = require("fs"),
-	es = require("event-stream"),
-	should = require("should");
-require("mocha");
+var fs = require('fs'),
+	es = require('event-stream'),
+	should = require('should');
+require('mocha');
 
-var gutil = require("gulp-util"),
-	w3c-validate = require("../");
+var gutil = require('gulp-util'),
+	w3cjs = require('../');
 
-describe("gulp-w3c-validate", function () {
+describe('gulp-w3cjs', function () {
+	it('should pass valid files', function (done) {
+		var a = 0;
 
-	var expectedFile = new gutil.File({
-		path: "test/expected/hello.txt",
-		cwd: "test/",
-		base: "test/expected",
-		contents: fs.readFileSync("test/expected/hello.txt")
-	});
-
-	it("should produce expected file via buffer", function (done) {
-
-		var srcFile = new gutil.File({
-			path: "test/fixtures/hello.txt",
-			cwd: "test/",
-			base: "test/fixtures",
-			contents: fs.readFileSync("test/fixtures/hello.txt")
+		var fakeFile = new gutil.File({
+			path: './test/html/valid.html',
+			cwd: './test/',
+			base: './test/html/',
+			contents: fs.readFileSync('./test/html/valid.html')
 		});
 
-		var stream = w3c-validate("World");
-
-		stream.on("error", function(err) {
-			should.exist(err);
-			done(err);
-		});
-
-		stream.on("data", function (newFile) {
-
+		var stream = w3cjs();
+		stream.on('data', function (newFile) {
 			should.exist(newFile);
+			newFile.w3cjs.success.should.equal(true);
+			newFile.w3cjs.messages.length.should.equal(0);
+			should.exist(newFile.path);
+			should.exist(newFile.relative);
 			should.exist(newFile.contents);
+			newFile.path.should.equal('./test/html/valid.html');
+			newFile.relative.should.equal('valid.html');
+			++a;
+		});
 
-			String(newFile.contents).should.equal(String(expectedFile.contents));
+		stream.once('end', function () {
+			a.should.equal(1);
 			done();
 		});
 
-		stream.write(srcFile);
+		stream.write(fakeFile);
 		stream.end();
 	});
 
-	it("should error on stream", function (done) {
+	it('should fail invalid files', function (done) {
+		var a = 0;
 
-		var srcFile = new gutil.File({
-			path: "test/fixtures/hello.txt",
-			cwd: "test/",
-			base: "test/fixtures",
-			contents: fs.createReadStream("test/fixtures/hello.txt")
+		var fakeFile = new gutil.File({
+			path: './test/html/invalid.html',
+			cwd: './test/',
+			base: './test/html/',
+			contents: fs.readFileSync('./test/html/invalid.html')
 		});
 
-		var stream = w3c-validate("World");
-
-		stream.on("error", function(err) {
-			should.exist(err);
-			done();
-		});
-
-		stream.on("data", function (newFile) {
-			newFile.contents.pipe(es.wait(function(err, data) {
-				done(err);
-			}));
-		});
-
-		stream.write(srcFile);
-		stream.end();
-	});
-
-	/*
-	it("should produce expected file via stream", function (done) {
-
-		var srcFile = new gutil.File({
-			path: "test/fixtures/hello.txt",
-			cwd: "test/",
-			base: "test/fixtures",
-			contents: fs.createReadStream("test/fixtures/hello.txt")
-		});
-
-		var stream = w3c-validate("World");
-
-		stream.on("error", function(err) {
-			should.exist(err);
-			done();
-		});
-
-		stream.on("data", function (newFile) {
-
+		var stream = w3cjs();
+		stream.on('data', function (newFile) {
 			should.exist(newFile);
+			newFile.w3cjs.success.should.equal(false);
+			newFile.w3cjs.messages.length.should.equal(2);
+			should.exist(newFile.path);
+			should.exist(newFile.relative);
 			should.exist(newFile.contents);
-
-			newFile.contents.pipe(es.wait(function(err, data) {
-				should.not.exist(err);
-				data.should.equal(String(expectedFile.contents));
-				done();
-			}));
+			newFile.path.should.equal('./test/html/invalid.html');
+			newFile.relative.should.equal('invalid.html');
+			++a;
 		});
 
-		stream.write(srcFile);
+		stream.once('end', function () {
+			a.should.equal(1);
+			done();
+		});
+
+		stream.write(fakeFile);
 		stream.end();
 	});
-	*/
 });

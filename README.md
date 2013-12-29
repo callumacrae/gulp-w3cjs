@@ -1,49 +1,42 @@
-(PLUGIN AUTHOR: Please read [Plugin README conventions](https://github.com/wearefractal/gulp/wiki/Plugin-README-Conventions), then delete this line)
+# gulp-w3cjs [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][depstat-image]][depstat-url]
 
-# gulp-w3c-validate [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][depstat-image]][depstat-url]
-
-> w3c-validate plugin for [gulp](https://github.com/wearefractal/gulp)
+> [w3cjs](https://github.com/thomasdavis/w3cjs) wrapper for [gulp](https://github.com/wearefractal/gulp)
 
 ## Usage
 
-First, install `gulp-w3c-validate` as a development dependency:
+First, install `gulp-w3cjs` as a development dependency:
 
 ```shell
-npm install --save-dev gulp-w3c-validate
+npm install --save-dev gulp-w3cjs
 ```
 
 Then, add it to your `gulpfile.js`:
 
 ```javascript
-var w3c-validate = require("gulp-w3c-validate");
+var w3cjs = require('gulp-w3cjs');
 
-gulp.src("./src/*.ext")
-	.pipe(w3c-validate({
-		msg: "Hello Gulp!"
-	}))
-	.pipe(gulp.dest("./dist"));
+gulp.task('w3cjs', function () {
+	gulp.src('src/*.html')
+		.pipe(w3cjs());
+});
 ```
 
 ## API
 
-### w3c-validate(options)
+### w3cjs()
 
-#### options.msg
-Type: `String`  
-Default: `Hello World`
-
-The message you wish to attach to file.
+No options. Uses the [w3cjs](https://github.com/thomasdavis/w3cjs) library, which uses the W3C validator.
 
 
 ## License
 
 [MIT License](http://en.wikipedia.org/wiki/MIT_License)
 
-[npm-url]: https://npmjs.org/package/gulp-w3c-validate
-[npm-image]: https://badge.fury.io/js/gulp-w3c-validate.png
+[npm-url]: https://npmjs.org/package/gulp-w3cjs
+[npm-image]: https://badge.fury.io/js/gulp-w3cjs.png
 
-[travis-url]: http://travis-ci.org/callumacrae/gulp-w3c-validate
-[travis-image]: https://secure.travis-ci.org/callumacrae/gulp-w3c-validate.png?branch=master
+[travis-url]: http://travis-ci.org/callumacrae/gulp-w3cjs
+[travis-image]: https://secure.travis-ci.org/callumacrae/gulp-w3cjs.png?branch=master
 
-[depstat-url]: https://david-dm.org/callumacrae/gulp-w3c-validate
-[depstat-image]: https://david-dm.org/callumacrae/gulp-w3c-validate.png
+[depstat-url]: https://david-dm.org/callumacrae/gulp-w3cjs
+[depstat-image]: https://david-dm.org/callumacrae/gulp-w3cjs.png
