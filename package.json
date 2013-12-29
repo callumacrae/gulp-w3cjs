@@ -1,6 +1,6 @@
 {
   "name": "gulp-w3cjs",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "A Gulp wrapper for w3cjs",
   "keywords": [
     "gulpplugin"
