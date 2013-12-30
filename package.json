@@ -1,6 +1,6 @@
 {
   "name": "gulp-w3cjs",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A Gulp wrapper for w3cjs to validate your HTML",
   "keywords": [
     "gulpplugin"
