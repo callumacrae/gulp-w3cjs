@@ -17,6 +17,11 @@ function handleMessages(file, messages) {
 		errorText = gutil.colors.red.bold('HTML Error:'),
 		warningText = gutil.colors.yellow.bold('HTML Warning:');
 
+	if (!Array.isArray(messages)) {
+		gutil.log(warningText, 'Failed to run validation on', file.relative);
+		return true; // Not sure whether this should be true or false
+	}
+
 	messages.forEach(function (message) {
 		if (message.type === 'error') {
 			success = false;
