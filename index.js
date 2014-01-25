@@ -38,8 +38,16 @@ function handleMessages(file, messages) {
 
 module.exports = function () {
 	return es.map(function (file, callback) {
+		if (file.isNull()) {
+			return cb(null, file);
+		}
+
+		if (file.isStream()) {
+			return cb(new PluginError('gulp-w3cjs', 'Streaming not supported'));
+		}
+
 		w3cjs.validate({
-			file: file.path,
+			input: file.contents,
 			callback: function (res) {
 				file.w3cjs = {
 					success: handleMessages(file, res.messages),
