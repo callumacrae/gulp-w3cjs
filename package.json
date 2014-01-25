@@ -23,7 +23,7 @@
   "dependencies": {
     "event-stream": "*",
     "w3cjs": "~0.1.24",
-    "gulp-util": "~2.2.12"
+    "gulp-util": "~2.2.0"
   },
   "devDependencies": {
     "mocha": "~1.17.1",
