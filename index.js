@@ -36,7 +36,9 @@ function handleMessages(file, messages) {
 	return success;
 }
 
-module.exports = function () {
+module.exports = function (options) {
+	options = options || {};
+
 	return es.map(function (file, callback) {
 		if (file.isNull()) {
 			return cb(null, file);
@@ -55,7 +57,10 @@ module.exports = function () {
 				};
 
 				callback(null, file);
-			}
+			},
+
+			doctype: options.doctype,
+			charset: options.charset
 		});
 	});
 };

@@ -23,9 +23,17 @@ gulp.task('w3cjs', function () {
 
 ## API
 
-### w3cjs()
+### w3cjs(options)
 
-No options. Uses the [w3cjs](https://github.com/thomasdavis/w3cjs) library, which uses the W3C validator.
+#### options.doctype
+
+Doctype to use. Defaults to false for autodetect.
+
+#### options.charset
+
+Charset to use. Defaults to false for autodetect.
+
+Both options are part of the [w3cjs](https://github.com/thomasdavis/w3cjs) library, which uses the W3C validator.
 
 
 ## License
