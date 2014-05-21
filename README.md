@@ -21,6 +21,40 @@ gulp.task('w3cjs', function () {
 });
 ```
 
+### Reporting
+
+The results are added onto each file object under `w3cjs`, containing `success` (Boolean) and `messages` (Array). 
+
+**Example usage**
+
+```javascript
+var w3cjs = require('gulp-w3cjs');
+var through2 = require('through2');
+
+gulp.task('example', function () {
+	gulp.src('src/*.html')
+		.pipe(w3cjs())
+		.pipe(through2.obj(function(file, enc, cb){
+			cb(null, file);
+			if (!file.w3cjs.success){
+				throw new Error('HTML validation error(s) found');
+			}
+		}));
+});
+```
+
+**Example output**
+
+```shell
+HTML Error: index.html Line 5, Column 19: Element title must not be empty.
+    <title></title>
+
+.../gulpfile.js:11
+                                throw new Error('HTML validation error(s) found');
+                                      ^
+Error: HTML validation error(s) found
+```
+
 ## API
 
 ### w3cjs(options)
@@ -34,7 +68,6 @@ Doctype to use. Defaults to false for autodetect.
 Charset to use. Defaults to false for autodetect.
 
 Both options are part of the [w3cjs](https://github.com/thomasdavis/w3cjs) library, which uses the W3C validator.
-
 
 ## License
 
