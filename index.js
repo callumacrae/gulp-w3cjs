@@ -44,9 +44,9 @@ function handleMessages(file, messages) {
 
 		//highlight character with error
 		erroredLine =
-			erroredLine.substring(0, errorColumn - 1) +
+			gutil.colors.grey(erroredLine.substring(0, errorColumn - 1)) +
 			gutil.colors.red.bold(erroredLine[ errorColumn - 1 ]) +
-			erroredLine.substring(errorColumn);
+			gutil.colors.grey(erroredLine.substring(errorColumn));
 
 		gutil.log(type, file.relative, location, message.message);
 		gutil.log(erroredLine);
