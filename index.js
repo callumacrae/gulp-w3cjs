@@ -30,10 +30,26 @@ function handleMessages(file, messages) {
 		var type = (message.type === 'error') ? errorText : warningText,
 			location = 'Line ' + message.lastLine + ', Column ' + message.lastColumn + ':';
 
-		var problematicPart = file.contents.slice(message.lastColumn-40, message.lastColumn+10);
+		var erroredLine = lines[message.lastLine - 1];
+		var errorColumn = message.lastColumn;
 
-		gutil.log(type, file.relative, location, message.message,
-			'\n' + problematicPart.toString(), '\n                                        ^');
+		//trim before if the error is too late in the line
+		if (errorColumn > 60) {
+			erroredLine = erroredLine.slice(errorColumn - 50);
+			errorColumn = 50;
+		}
+
+		//trim after so the line is not too long
+		erroredLine = erroredLine.slice(0, 60);
+
+		//highlight character with error
+		erroredLine =
+			erroredLine.substring(0, errorColumn - 1) +
+			gutil.colors.red.bold(erroredLine[ errorColumn - 1 ]) +
+			erroredLine.substring(errorColumn);
+
+		gutil.log(type, file.relative, location, message.message);
+		gutil.log(erroredLine);
 	});
 
 	return success;
