@@ -30,7 +30,10 @@ function handleMessages(file, messages) {
 		var type = (message.type === 'error') ? errorText : warningText,
 			location = 'Line ' + message.lastLine + ', Column ' + message.lastColumn + ':';
 
-		gutil.log(type, file.relative, location, message.message);
+		var problematicPart = file.contents.slice(message.lastColumn-40, message.lastColumn+10);
+
+		gutil.log(type, file.relative, location, message.message,
+			'\n' + problematicPart.toString(), '\n                                        ^');
 	});
 
 	return success;
