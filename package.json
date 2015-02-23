@@ -3,7 +3,11 @@
   "version": "0.2.0",
   "description": "A Gulp wrapper for w3cjs to validate your HTML",
   "keywords": [
-    "gulpplugin"
+    "gulpplugin",
+    "html",
+    "validate",
+    "validation",
+    "w3c"
   ],
   "homepage": "https://github.com/callumacrae/gulp-w3cjs",
   "bugs": "https://github.com/callumacrae/gulp-w3cjs/issues",
@@ -30,7 +34,7 @@
     "should": "^5.0.1"
   },
   "engines": {
-    "node": ">=0.9.0",
+    "node": ">=0.10.0",
     "npm": ">=1.2.10"
   },
   "licenses": [
