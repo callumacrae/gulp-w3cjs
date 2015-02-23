@@ -1,9 +1,8 @@
 'use strict';
 
-var es = require('event-stream');
+var through = require('through2');
 var w3cjs = require('w3cjs');
 var gutil = require('gulp-util');
-var path = require('path');
 
 /**
  * Handles messages.
@@ -30,9 +29,7 @@ function handleMessages(file, messages) {
 			success = false;
 		}
 
-		var type = (message.type === 'error')
-			? errorText
-			: warningText;
+		var type = (message.type === 'error') ? errorText : warningText;
 
 		var location = 'Line ' + message.lastLine + ', Column ' + message.lastColumn + ':';
 
@@ -71,13 +68,13 @@ function handleMessages(file, messages) {
 module.exports = function (options) {
 	options = options || {};
 
-	return es.map(function (file, callback) {
+	return through.obj(function (file, enc, callback) {
 		if (file.isNull()) {
-			return cb(null, file);
+			return callback(null, file);
 		}
 
 		if (file.isStream()) {
-			return cb(new PluginError('gulp-w3cjs', 'Streaming not supported'));
+			return callback(new gutil.PluginError('gulp-w3cjs', 'Streaming not supported'));
 		}
 
 		w3cjs.validate({

@@ -2,7 +2,6 @@
 'use strict';
 
 var fs = require('fs');
-var es = require('event-stream');
 var should = require('should');
 
 var gutil = require('gulp-util');

@@ -21,8 +21,8 @@
     "test": "mocha"
   },
   "dependencies": {
-    "event-stream": "*",
     "gulp-util": "^3.0.3",
+    "through2": "^0.6.3",
     "w3cjs": "^0.2.0"
   },
   "devDependencies": {
