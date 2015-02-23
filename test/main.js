@@ -4,7 +4,6 @@
 var fs = require('fs'),
 	es = require('event-stream'),
 	should = require('should');
-require('mocha');
 
 var gutil = require('gulp-util'),
 	w3cjs = require('../');
