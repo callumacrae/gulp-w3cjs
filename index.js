@@ -1,9 +1,9 @@
 'use strict';
 
-var es = require('event-stream'),
-	w3cjs = require('w3cjs'),
-	gutil = require('gulp-util'),
-	path = require('path');
+var es = require('event-stream');
+var w3cjs = require('w3cjs');
+var gutil = require('gulp-util');
+var path = require('path');
 
 /**
  * Handles messages.
@@ -13,14 +13,16 @@ var es = require('event-stream'),
  * @return boolean Return false if errors have occurred.
  */
 function handleMessages(file, messages) {
-	var success = true,
-		errorText = gutil.colors.red.bold('HTML Error:'),
-		warningText = gutil.colors.yellow.bold('HTML Warning:'),
-		lines = file.contents.toString().split(/\r\n|\r|\n/g);
+	var success = true;
+	var errorText = gutil.colors.red.bold('HTML Error:');
+	var warningText = gutil.colors.yellow.bold('HTML Warning:');
+	var lines = file.contents.toString().split(/\r\n|\r|\n/g);
 
 	if (!Array.isArray(messages)) {
 		gutil.log(warningText, 'Failed to run validation on', file.relative);
-		return true; // Not sure whether this should be true or false
+
+		// Not sure whether this should be true or false
+		return true;
 	}
 
 	messages.forEach(function (message) {
@@ -28,23 +30,28 @@ function handleMessages(file, messages) {
 			success = false;
 		}
 
-		var type = (message.type === 'error') ? errorText : warningText,
-			location = 'Line ' + message.lastLine + ', Column ' + message.lastColumn + ':';
+		var type = (message.type === 'error')
+			? errorText
+			: warningText;
+
+		var location = 'Line ' + message.lastLine + ', Column ' + message.lastColumn + ':';
 
 		var erroredLine = lines[message.lastLine - 1];
-		if (erroredLine) {//if not, stream was changed since validation
+
+		// If this is false, stream was changed since validation
+		if (erroredLine) {
 			var errorColumn = message.lastColumn;
 
-			//trim before if the error is too late in the line
+			// Trim before if the error is too late in the line
 			if (errorColumn > 60) {
 				erroredLine = erroredLine.slice(errorColumn - 50);
 				errorColumn = 50;
 			}
 
-			//trim after so the line is not too long
+			// Trim after so the line is not too long
 			erroredLine = erroredLine.slice(0, 60);
 
-			//highlight character with error
+			// Highlight character with error
 			erroredLine =
 				gutil.colors.grey(erroredLine.substring(0, errorColumn - 1)) +
 				gutil.colors.red.bold(erroredLine[ errorColumn - 1 ]) +

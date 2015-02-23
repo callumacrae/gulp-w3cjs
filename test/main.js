@@ -1,12 +1,12 @@
-/*global describe, it*/
+/* global describe, it */
 'use strict';
 
-var fs = require('fs'),
-	es = require('event-stream'),
-	should = require('should');
+var fs = require('fs');
+var es = require('event-stream');
+var should = require('should');
 
-var gutil = require('gulp-util'),
-	w3cjs = require('../');
+var gutil = require('gulp-util');
+var w3cjs = require('../');
 
 describe('gulp-w3cjs', function () {
 	it('should pass valid files', function (done) {
