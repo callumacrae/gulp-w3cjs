@@ -11,10 +11,11 @@ var gutil = require('gulp-util');
  * @param messages Array of messages returned by w3cjs.
  * @return boolean Return false if errors have occurred.
  */
-function handleMessages(file, messages) {
+function handleMessages(file, messages, options) {
 	var success = true;
 	var errorText = gutil.colors.red.bold('HTML Error:');
 	var warningText = gutil.colors.yellow.bold('HTML Warning:');
+	var infoText = gutil.colors.green.bold('HTML Info:');
 	var lines = file.contents.toString().split(/\r\n|\r|\n/g);
 
 	if (!Array.isArray(messages)) {
@@ -25,13 +26,17 @@ function handleMessages(file, messages) {
 	}
 
 	messages.forEach(function (message) {
+		if (message.type === 'info' && !options.showInfo) {
+			return;
+		}
+
 		if (message.type === 'error') {
 			success = false;
 		}
 
-		var type = (message.type === 'error') ? errorText : warningText;
+		var type = (message.type === 'error') ? errorText : ((message.type === 'info') ? infoText : warningText);
 
-		var location = 'Line ' + message.lastLine + ', Column ' + message.lastColumn + ':';
+		var location = 'Line ' + (message.lastLine || 0) + ', Column ' + (message.lastColumn || 0) + ':';
 
 		var erroredLine = lines[message.lastLine - 1];
 
@@ -55,7 +60,11 @@ function handleMessages(file, messages) {
 				gutil.colors.grey(erroredLine.substring(errorColumn));
 		}
 
-		gutil.log(type, file.relative, location, message.message);
+		if (typeof(message.lastLine) !== 'undefined' || typeof(lastColumn) !== 'undefined') {
+			gutil.log(type, file.relative, location, message.message);
+		} else {
+			gutil.log(type, file.relative, message.message);
+		}
 
 		if (erroredLine) {
 			gutil.log(erroredLine);
@@ -81,7 +90,7 @@ module.exports = function (options) {
 			input: file.contents,
 			callback: function (res) {
 				file.w3cjs = {
-					success: handleMessages(file, res.messages),
+					success: handleMessages(file, res.messages, options),
 					messages: res.messages
 				};
 
