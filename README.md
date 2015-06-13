@@ -69,6 +69,15 @@ Charset to use. Defaults to false for autodetect.
 
 Both options are part of the [w3cjs](https://github.com/thomasdavis/w3cjs) library, which uses the W3C validator.
 
+#### options.url
+
+URL to the w3c validator. Use if you want to use a local validator. This is the
+same thing as `w3cjs.setW3cCheckUrl()`.
+
+### w3cjs.setW3cCheckUrl(url)
+
+Same as options.url. SEt's the URL to the w3c validator.
+
 ## License
 
 [MIT License](http://en.wikipedia.org/wiki/MIT_License)

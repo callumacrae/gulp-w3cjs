@@ -106,4 +106,8 @@ describe('gulp-w3cjs', function () {
 		stream.write(fakeFile);
 		stream.end();
 	});
+
+	it('should be possible to set a new checkUrl', function () {
+		w3cjs.setW3cCheckUrl('http://localhost');
+	});
 });

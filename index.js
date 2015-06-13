@@ -68,6 +68,10 @@ function handleMessages(file, messages) {
 module.exports = function (options) {
 	options = options || {};
 
+	if (typeof options.uri === 'string') {
+		w3cjs.setW3cCheckUrl(options.uri);
+	}
+
 	return through.obj(function (file, enc, callback) {
 		if (file.isNull()) {
 			return callback(null, file);
@@ -93,3 +97,5 @@ module.exports = function (options) {
 		});
 	});
 };
+
+module.exports.setW3cCheckUrl = w3cjs.setW3cCheckUrl;
