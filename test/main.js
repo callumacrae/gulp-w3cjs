@@ -18,11 +18,11 @@ describe('gulp-w3cjs', function () {
 			contents: fs.readFileSync('./test/html/valid.html')
 		});
 
-		var stream = w3cjs();
+		var stream = w3cjs({showInfo: true});
 		stream.on('data', function (newFile) {
 			should.exist(newFile);
 			newFile.w3cjs.success.should.equal(true);
-			newFile.w3cjs.messages.length.should.equal(0);
+			newFile.w3cjs.messages.filter(function(m) { return m.type!=="info"; }).length.should.equal(0);
 			should.exist(newFile.path);
 			should.exist(newFile.relative);
 			should.exist(newFile.contents);
@@ -57,7 +57,7 @@ describe('gulp-w3cjs', function () {
 		stream.on('data', function (newFile) {
 			should.exist(newFile);
 			newFile.w3cjs.success.should.equal(true);
-			newFile.w3cjs.messages.length.should.equal(0);
+			newFile.w3cjs.messages.filter(function(m) { return m.type!=="info"; }).length.should.equal(0);
 			should.exist(newFile.path);
 			should.exist(newFile.relative);
 			should.exist(newFile.contents);
@@ -89,7 +89,7 @@ describe('gulp-w3cjs', function () {
 		stream.on('data', function (newFile) {
 			should.exist(newFile);
 			newFile.w3cjs.success.should.equal(false);
-			newFile.w3cjs.messages.length.should.equal(2);
+			newFile.w3cjs.messages.filter(function(m) { return m.type!=="info"; }).length.should.equal(2);
 			should.exist(newFile.path);
 			should.exist(newFile.relative);
 			should.exist(newFile.contents);
