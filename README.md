@@ -59,20 +59,12 @@ Error: HTML validation error(s) found
 
 ### w3cjs(options)
 
-#### options.doctype
-
-Doctype to use. Defaults to false for autodetect.
-
-#### options.charset
-
-Charset to use. Defaults to false for autodetect.
-
-Both options are part of the [w3cjs](https://github.com/thomasdavis/w3cjs) library, which uses the W3C validator.
-
 #### options.url
 
 URL to the w3c validator. Use if you want to use a local validator. This is the
 same thing as `w3cjs.setW3cCheckUrl()`.
+
+_`options.doctype` and `options.charset` were dropped in 1.0.0. Use 0.3.0 if you need them._
 
 ### w3cjs.setW3cCheckUrl(url)
 
