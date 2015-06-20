@@ -18,51 +18,16 @@ describe('gulp-w3cjs', function () {
 			contents: fs.readFileSync('./test/html/valid.html')
 		});
 
-		var stream = w3cjs();
+		var stream = w3cjs({showInfo: true});
 		stream.on('data', function (newFile) {
 			should.exist(newFile);
 			newFile.w3cjs.success.should.equal(true);
-			newFile.w3cjs.messages.length.should.equal(0);
+			newFile.w3cjs.messages.filter(function(m) { return m.type!=="info"; }).length.should.equal(0);
 			should.exist(newFile.path);
 			should.exist(newFile.relative);
 			should.exist(newFile.contents);
 			newFile.path.should.equal('./test/html/valid.html');
 			newFile.relative.should.equal('valid.html');
-			++a;
-		});
-
-		stream.once('end', function () {
-			a.should.equal(1);
-			done();
-		});
-
-		stream.write(fakeFile);
-		stream.end();
-	});
-
-	it('should allow options to be passed', function (done) {
-		var a = 0;
-
-		var fakeFile = new gutil.File({
-			path: './test/html/no-doctype.html',
-			cwd: './test/',
-			base: './test/html/',
-			contents: fs.readFileSync('./test/html/no-doctype.html')
-		});
-
-		var stream = w3cjs({
-			doctype: 'HTML5'
-		});
-
-		stream.on('data', function (newFile) {
-			should.exist(newFile);
-			newFile.w3cjs.success.should.equal(true);
-			newFile.w3cjs.messages.length.should.equal(0);
-			should.exist(newFile.path);
-			should.exist(newFile.relative);
-			should.exist(newFile.contents);
-			newFile.path.should.equal('./test/html/no-doctype.html');
-			newFile.relative.should.equal('no-doctype.html');
 			++a;
 		});
 
@@ -89,7 +54,7 @@ describe('gulp-w3cjs', function () {
 		stream.on('data', function (newFile) {
 			should.exist(newFile);
 			newFile.w3cjs.success.should.equal(false);
-			newFile.w3cjs.messages.length.should.equal(2);
+			newFile.w3cjs.messages.filter(function(m) { return m.type!=="info"; }).length.should.equal(2);
 			should.exist(newFile.path);
 			should.exist(newFile.relative);
 			should.exist(newFile.contents);
