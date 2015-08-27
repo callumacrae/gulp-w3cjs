@@ -91,6 +91,7 @@ module.exports = function (options) {
 		}
 
 		w3cjs.validate({
+			proxy: options.proxy ? options.proxy : undefined,			
 			input: file.contents,
 			callback: function (res) {
 				file.w3cjs = {

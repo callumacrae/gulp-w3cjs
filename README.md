@@ -64,6 +64,10 @@ Error: HTML validation error(s) found
 URL to the w3c validator. Use if you want to use a local validator. This is the
 same thing as `w3cjs.setW3cCheckUrl()`.
 
+#### options.proxy
+
+Http address of the proxy server if you are running behind a firewall, e.g.  `http://proxy:8080`
+
 _`options.doctype` and `options.charset` were dropped in 1.0.0. Use 0.3.0 if you need them._
 
 ### w3cjs.setW3cCheckUrl(url)
