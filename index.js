@@ -77,8 +77,13 @@ function handleMessages(file, messages, options) {
 module.exports = function (options) {
 	options = options || {};
 
+	// I typo'd this and didn't want to break BC
 	if (typeof options.uri === 'string') {
-		w3cjs.setW3cCheckUrl(options.uri);
+		options.url = options.uri;
+	}
+
+	if (typeof options.url === 'string') {
+		w3cjs.setW3cCheckUrl(options.url);
 	}
 
 	return through.obj(function (file, enc, callback) {
