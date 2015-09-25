@@ -59,7 +59,7 @@ Error: HTML validation error(s) found
 
 ### w3cjs(options)
 
-#### options.url
+#### options.uri
 
 URL to the w3c validator. Use if you want to use a local validator. This is the
 same thing as `w3cjs.setW3cCheckUrl()`.
