@@ -75,7 +75,7 @@ function handleMessages(file, messages, options) {
 }
 
 function reporter (message) {
-	through2.obj(function(file, enc, cb) {
+	through.obj(function(file, enc, cb) {
         cb(null, file);
         if (!file.w3cjs.success) {
             throw new gutil.PluginError('gulp-w3cjs', 'HTML validation error(s) found');
