@@ -24,7 +24,7 @@ gulp.task('w3cjs', function () {
 
 ### Custom Reporting
 
-The results are added onto each file object under `w3cjs`, containing `success` (Boolean) and `messages` (Array).
+The results are also added onto each file object under `w3cjs`, containing `success` (Boolean) and `messages` (Array).
 
 **Example usage**
 

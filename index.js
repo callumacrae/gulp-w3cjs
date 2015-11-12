@@ -74,10 +74,10 @@ function handleMessages(file, messages, options) {
 	return success;
 }
 
-function reporter (message) {
-	through.obj(function(file, enc, cb) {
+function reporter() {
+	return through.obj(function(file, enc, cb) {
         cb(null, file);
-        if (!file.w3cjs.success) {
+        if (file.w3cjs && !file.w3cjs.success) {
             throw new gutil.PluginError('gulp-w3cjs', 'HTML validation error(s) found');
         }
     });
