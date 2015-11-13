@@ -74,6 +74,15 @@ function handleMessages(file, messages, options) {
 	return success;
 }
 
+function reporter() {
+	return through.obj(function(file, enc, cb) {
+        cb(null, file);
+        if (file.w3cjs && !file.w3cjs.success) {
+            throw new gutil.PluginError('gulp-w3cjs', 'HTML validation error(s) found');
+        }
+    });
+}
+
 module.exports = function (options) {
 	options = options || {};
 
@@ -110,4 +119,5 @@ module.exports = function (options) {
 	});
 };
 
+module.exports.reporter = reporter;
 module.exports.setW3cCheckUrl = w3cjs.setW3cCheckUrl;
