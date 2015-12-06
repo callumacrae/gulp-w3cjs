@@ -60,6 +60,20 @@ function handleMessages(file, messages, options) {
 				gutil.colors.grey(erroredLine.substring(errorColumn));
 		}
 
+		// if @param options.skipErrors is defined — skip errors
+		var skipFlag = false;
+
+		if (Array.isArray(options.skipErrors)) {
+			skipFlag = options.skipErrors.some(function(skipError) {
+				var msg = message.message.toLowerCase();
+				return msg.search(skipError.toLowerCase()) !== -1;
+			});
+		}
+
+		if (skipFlag === true) {
+			return;
+		}
+
 		if (typeof(message.lastLine) !== 'undefined' || typeof(lastColumn) !== 'undefined') {
 			gutil.log(type, file.relative, location, message.message);
 		} else {
