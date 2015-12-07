@@ -71,6 +71,24 @@ Http address of the proxy server if you are running behind a firewall, e.g.  `ht
 
 _`options.doctype` and `options.charset` were dropped in 1.0.0. Use 0.3.0 if you need them._
 
+#### options.skipErrors
+
+Prevent logging to CLI certain W3C errors messages. This param must be an array of strings.
+Useful when validating old DOCTYPE (e.g. html emails).
+
+```javascript
+gulp.task('w3cjs', function () {
+	gulp.src('src/*.html')
+		.pipe(w3cjs({
+			// errors you don't want to see
+			skipErrors: [
+				'The “width” attribute on the “table” element is obsolete. Use CSS instead.', // exact error message
+				'attribute on the “table” element' // part of the error message
+			]
+		}));
+});
+```
+
 ### w3cjs.setW3cCheckUrl(url)
 
 Same as options.url. SEt's the URL to the w3c validator.

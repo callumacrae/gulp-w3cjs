@@ -66,7 +66,7 @@ function handleMessages(file, messages, options) {
 		if (Array.isArray(options.skipErrors)) {
 			skipFlag = options.skipErrors.some(function(skipError) {
 				var msg = message.message.toLowerCase();
-				return msg.search(skipError.toLowerCase()) !== -1;
+				return msg.search(skipError.toLowerCase().trim()) !== -1;
 			});
 		}
 

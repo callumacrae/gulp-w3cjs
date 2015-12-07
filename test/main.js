@@ -23,7 +23,7 @@ describe('gulp-w3cjs', function () {
 			stream.on('data', function (newFile) {
 				should.exist(newFile);
 				newFile.w3cjs.success.should.equal(true);
-				newFile.w3cjs.messages.filter(function(m) { return m.type!=="info"; }).length.should.equal(0);
+				newFile.w3cjs.messages.filter(function(m) { return m.type!=='info'; }).length.should.equal(0);
 				should.exist(newFile.path);
 				should.exist(newFile.relative);
 				should.exist(newFile.contents);
@@ -55,7 +55,7 @@ describe('gulp-w3cjs', function () {
 			stream.on('data', function (newFile) {
 				should.exist(newFile);
 				newFile.w3cjs.success.should.equal(false);
-				newFile.w3cjs.messages.filter(function(m) { return m.type!=="info"; }).length.should.equal(2);
+				newFile.w3cjs.messages.filter(function(m) { return m.type!=='info'; }).length.should.equal(2);
 				should.exist(newFile.path);
 				should.exist(newFile.relative);
 				should.exist(newFile.contents);
@@ -66,6 +66,37 @@ describe('gulp-w3cjs', function () {
 
 			stream.once('end', function () {
 				a.should.equal(1);
+				done();
+			});
+
+			stream.write(fakeFile);
+			stream.end();
+		});
+
+		it('should fail even skipping errors', function (done) {
+			var fakeFile = new gutil.File({
+				path: './test/html/invalid.html',
+				cwd: './test/',
+				base: './test/html/',
+				contents: fs.readFileSync('./test/html/invalid.html')
+			});
+
+			var stream = w3cjs({
+				skipErrors: [
+					'End tag for  “body” seen, but there were unclosed elements.',
+					'Unclosed element “h1”.'
+				]
+			});
+
+			stream.on('data', function (newFile) {
+				var reporter = w3cjs.reporter();
+
+				(function () {
+					reporter.write(newFile);
+				}).should.throw(/HTML validation error\(s\) found/);
+			});
+
+			stream.once('end', function () {
 				done();
 			});
 
