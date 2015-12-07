@@ -74,6 +74,7 @@ _`options.doctype` and `options.charset` were dropped in 1.0.0. Use 0.3.0 if you
 #### options.skipErrors
 
 Prevent logging to CLI certain W3C errors messages. This param must be an array of strings.
+
 Useful when validating old DOCTYPE (e.g. html emails).
 
 ```javascript
@@ -82,7 +83,7 @@ gulp.task('w3cjs', function () {
 		.pipe(w3cjs({
 			// errors you don't want to see
 			skipErrors: [
-				'The “width” attribute on the “table” element is obsolete. Use CSS instead.', // exact error message
+				'The “center” element is obsolete. Use CSS instead.', // exact error message
 				'attribute on the “table” element' // part of the error message
 			]
 		}));
