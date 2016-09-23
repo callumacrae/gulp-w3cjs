@@ -26,6 +26,10 @@ function handleMessages(file, messages, options) {
 	}
 
 	messages.forEach(function (message) {
+
+		// allows you to intercept info, warnings or errors, using `options.verifyMessage` methed, returning false will skip the log output 
+		if(options.verifyMessage && !options.verifyMessage(message.type, message.message)) return;
+
 		if (message.type === 'info' && !options.showInfo) {
 			return;
 		}

@@ -72,6 +72,42 @@ describe('gulp-w3cjs', function () {
 			stream.write(fakeFile);
 			stream.end();
 		});
+		
+		it('should allow a custom error to be ignored when `options.verifyMessage` used', function(done) {
+			var a = 0;
+
+			var fakeFile = new gutil.File({
+				path: './test/html/invalid.html',
+				cwd: './test/',
+				base: './test/html/',
+				contents: fs.readFileSync('./test/html/invalid.html')
+			});
+
+			var stream = w3cjs({
+				verifyMessage: function(type, message) {
+
+					// prevent logging error message
+					if(message.indexOf('End tag for  “body” seen, but') === 0) return false;
+					if(message.indexOf('Unclosed element “h1”.') === 0) return false;
+					
+					// allow message to pass through
+					return true;
+				}
+			});
+			stream.on('data', function (newFile) {
+				should.exist(newFile);
+				newFile.w3cjs.success.should.equal(true);
+				++a;
+			});
+
+			stream.once('end', function () {
+				a.should.equal(1);
+				done();
+			});
+
+			stream.write(fakeFile);
+			stream.end();
+		})
 	});
 
 	describe('w3cjs.setW3cCheckUrl()', function () {
@@ -120,4 +156,5 @@ describe('gulp-w3cjs', function () {
 			return stream;
 		});
 	});
+
 });
