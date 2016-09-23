@@ -71,6 +71,24 @@ Http address of the proxy server if you are running behind a firewall, e.g.  `ht
 
 _`options.doctype` and `options.charset` were dropped in 1.0.0. Use 0.3.0 if you need them._
 
+#### options.verifyMessage
+
+Allows you to intercept info, warnings or errors, using `options.verifyMessage` methed, returning false will skip the log output. Example usage:
+```js
+gulp.src('index.html')
+.pipe(w3cjs({
+	verifyMessage: function(type, message) {
+
+		// prevent logging error message
+		if(message.indexOf('Element “style” not allowed as child of element') === 0) return false;
+		
+		// allow message to pass through
+		return true;
+	}
+}))
+.pipe(w3cjs.reporter())
+```
+
 ### w3cjs.setW3cCheckUrl(url)
 
 Same as options.url. SEt's the URL to the w3c validator.
