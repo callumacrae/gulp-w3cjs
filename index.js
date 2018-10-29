@@ -113,7 +113,10 @@ module.exports = function (options) {
 		w3cjs.validate({
 			proxy: options.proxy ? options.proxy : undefined,
 			input: file.contents,
-			callback: function (res) {
+			callback: function (error, res) {
+				if(error){
+					return callback(new PluginError('gulp-w3cjs', error))
+				}
 				file.w3cjs = {
 					success: handleMessages(file, res.messages, options),
 					messages: res.messages
