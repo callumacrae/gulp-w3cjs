@@ -3,8 +3,9 @@
 
 var fs = require('fs');
 var should = require('should');
+var path = require('path');
 
-var gutil = require('gulp-util');
+var Vinyl = require('vinyl');
 var w3cjs = require('../');
 
 describe('gulp-w3cjs', function () {
@@ -12,7 +13,7 @@ describe('gulp-w3cjs', function () {
 		it('should pass valid files', function (done) {
 			var a = 0;
 
-			var fakeFile = new gutil.File({
+			var fakeFile = new Vinyl({
 				path: './test/html/valid.html',
 				cwd: './test/',
 				base: './test/html/',
@@ -27,7 +28,7 @@ describe('gulp-w3cjs', function () {
 				should.exist(newFile.path);
 				should.exist(newFile.relative);
 				should.exist(newFile.contents);
-				newFile.path.should.equal('./test/html/valid.html');
+				newFile.path.should.equal(path.normalize('./test/html/valid.html'));
 				newFile.relative.should.equal('valid.html');
 				++a;
 			});
@@ -44,7 +45,7 @@ describe('gulp-w3cjs', function () {
 		it('should fail invalid files', function (done) {
 			var a = 0;
 
-			var fakeFile = new gutil.File({
+			var fakeFile = new Vinyl({
 				path: './test/html/invalid.html',
 				cwd: './test/',
 				base: './test/html/',
@@ -59,7 +60,7 @@ describe('gulp-w3cjs', function () {
 				should.exist(newFile.path);
 				should.exist(newFile.relative);
 				should.exist(newFile.contents);
-				newFile.path.should.equal('./test/html/invalid.html');
+				newFile.path.should.equal(path.normalize('./test/html/invalid.html'));
 				newFile.relative.should.equal('invalid.html');
 				++a;
 			});
@@ -76,7 +77,7 @@ describe('gulp-w3cjs', function () {
 		it('should allow a custom error to be ignored when `options.verifyMessage` used', function(done) {
 			var a = 0;
 
-			var fakeFile = new gutil.File({
+			var fakeFile = new Vinyl({
 				path: './test/html/invalid.html',
 				cwd: './test/',
 				base: './test/html/',
@@ -118,7 +119,7 @@ describe('gulp-w3cjs', function () {
 
 	describe('w3cjs.reporter()', function () {
 		it('should pass files through', function () {
-			var fakeFile = new gutil.File({
+			var fakeFile = new Vinyl({
 				path: './test/html/valid.html',
 				cwd: './test/',
 				base: './test/html/',
@@ -133,7 +134,7 @@ describe('gulp-w3cjs', function () {
 		});
 
 		it('should contain a reporter by default', function () {
-			var fakeFile = new gutil.File({
+			var fakeFile = new Vinyl({
 				path: './test/html/invalid.html',
 				cwd: './test/',
 				base: './test/html/',

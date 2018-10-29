@@ -2,7 +2,9 @@
 
 var through = require('through2');
 var w3cjs = require('w3cjs');
-var gutil = require('gulp-util');
+var fancyLog = require('fancy-log');
+var PluginError = require('plugin-error');
+var colors = require('ansi-colors');
 
 /**
  * Handles messages.
@@ -13,13 +15,13 @@ var gutil = require('gulp-util');
  */
 function handleMessages(file, messages, options) {
 	var success = true;
-	var errorText = gutil.colors.red.bold('HTML Error:');
-	var warningText = gutil.colors.yellow.bold('HTML Warning:');
-	var infoText = gutil.colors.green.bold('HTML Info:');
+	var errorText = colors.bold(colors.red('HTML Error:'));
+	var warningText = colors.bold(colors.yellow('HTML Warning:'));
+	var infoText = colors.bold(colors.green('HTML Info:'));
 	var lines = file.contents.toString().split(/\r\n|\r|\n/g);
 
 	if (!Array.isArray(messages)) {
-		gutil.log(warningText, 'Failed to run validation on', file.relative);
+		fancyLog(warningText, 'Failed to run validation on', file.relative);
 
 		// Not sure whether this should be true or false
 		return true;
@@ -59,19 +61,19 @@ function handleMessages(file, messages, options) {
 
 			// Highlight character with error
 			erroredLine =
-				gutil.colors.grey(erroredLine.substring(0, errorColumn - 1)) +
-				gutil.colors.red.bold(erroredLine[ errorColumn - 1 ]) +
-				gutil.colors.grey(erroredLine.substring(errorColumn));
+				colors.grey(erroredLine.substring(0, errorColumn - 1)) +
+				colors.bold(colors.red(erroredLine[ errorColumn - 1 ])) +
+				colors.grey(erroredLine.substring(errorColumn));
 		}
 
 		if (typeof(message.lastLine) !== 'undefined' || typeof(lastColumn) !== 'undefined') {
-			gutil.log(type, file.relative, location, message.message);
+			fancyLog(type, file.relative, location, message.message);
 		} else {
-			gutil.log(type, file.relative, message.message);
+			fancyLog(type, file.relative, message.message);
 		}
 
 		if (erroredLine) {
-			gutil.log(erroredLine);
+			fancyLog(erroredLine);
 		}
 	});
 
@@ -82,7 +84,7 @@ function reporter() {
 	return through.obj(function(file, enc, cb) {
         cb(null, file);
         if (file.w3cjs && !file.w3cjs.success) {
-            throw new gutil.PluginError('gulp-w3cjs', 'HTML validation error(s) found');
+            throw new PluginError('gulp-w3cjs', 'HTML validation error(s) found');
         }
     });
 }
@@ -105,7 +107,7 @@ module.exports = function (options) {
 		}
 
 		if (file.isStream()) {
-			return callback(new gutil.PluginError('gulp-w3cjs', 'Streaming not supported'));
+			return callback(new PluginError('gulp-w3cjs', 'Streaming not supported'));
 		}
 
 		w3cjs.validate({
