@@ -71,6 +71,12 @@ Http address of the proxy server if you are running behind a firewall, e.g.  `ht
 
 _`options.doctype` and `options.charset` were dropped in 1.0.0. Use 0.3.0 if you need them._
 
+#### options.showInfo
+
+Default: `false`
+
+Show `info` type messages in the output.
+
 #### options.verifyMessage
 
 Allows you to intercept info, warnings or errors, using `options.verifyMessage` methed, returning false will skip the log output. Example usage:
