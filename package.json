@@ -28,7 +28,7 @@
     "ansi-colors": "^3.2.1",
     "fancy-log": "^1.3.2",
     "plugin-error": "^1.0.1",
-    "through2": "^2.0.0",
+    "through2": "^3.0.1",
     "w3cjs": "^0.4.0"
   },
   "devDependencies": {
