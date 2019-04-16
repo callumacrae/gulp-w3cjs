@@ -16,7 +16,7 @@ Then, add it to your `gulpfile.js`:
 var w3cjs = require('gulp-w3cjs');
 
 gulp.task('w3cjs', function () {
-	gulp.src('src/*.html')
+	return gulp.src('src/*.html')
 		.pipe(w3cjs())
 		.pipe(w3cjs.reporter());
 });
@@ -33,7 +33,7 @@ var w3cjs = require('gulp-w3cjs');
 var through2 = require('through2');
 
 gulp.task('example', function () {
-	gulp.src('src/*.html')
+	return gulp.src('src/*.html')
 		.pipe(w3cjs())
 		.pipe(through2.obj(function(file, enc, cb){
 			cb(null, file);
@@ -81,18 +81,18 @@ Show `info` type messages in the output.
 
 Allows you to intercept info, warnings or errors, using `options.verifyMessage` methed, returning false will skip the log output. Example usage:
 ```js
-gulp.src('index.html')
-.pipe(w3cjs({
-	verifyMessage: function(type, message) {
+return gulp.src('index.html')
+	.pipe(w3cjs({
+		verifyMessage: function(type, message) {
 
-		// prevent logging error message
-		if(message.indexOf('Element “style” not allowed as child of element') === 0) return false;
-		
-		// allow message to pass through
-		return true;
-	}
-}))
-.pipe(w3cjs.reporter())
+			// prevent logging error message
+			if(message.indexOf('Element “style” not allowed as child of element') === 0) return false;
+			
+			// allow message to pass through
+			return true;
+		}
+	}))
+	.pipe(w3cjs.reporter())
 ```
 
 ### w3cjs.setW3cCheckUrl(url)
